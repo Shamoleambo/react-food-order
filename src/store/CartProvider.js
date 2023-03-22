@@ -4,7 +4,7 @@ import CartContext from './cart-context'
 const defaultCartState = { items: [], totalAmount: 0 }
 
 const cartReducer = (state, action) => {
-  if (action === 'ADD') {
+  if (action.type === 'ADD') {
     const itemPrice = action.item.price
     const itemAmount = action.item.amount
 
@@ -24,18 +24,18 @@ const CartProvider = props => {
     defaultCartState
   )
 
-  const addItemHandler = item => {
+  const addItemToCartHandler = item => {
     dispatchCartAction({ type: 'ADD', item })
   }
-  const removeItemHandler = id => {
+  const removeItemFromCartHandler = id => {
     dispatchCartAction({ type: 'REMOVE', id })
   }
 
   const cartContext = {
     items: cartState.items,
     amount: cartState.totalAmount,
-    addItem: addItemHandler,
-    removeItem: removeItemHandler
+    addItem: addItemToCartHandler,
+    removeItem: removeItemFromCartHandler
   }
 
   return (
