@@ -8,8 +8,24 @@ const cartReducer = (state, action) => {
     const itemPrice = action.item.price
     const itemAmount = action.item.amount
 
-    const items = state.items.concat(action.item)
     const totalAmount = state.totalAmount + itemPrice * itemAmount
+
+    const existingCartItemIndex = state.items.findIndex(
+      item => item.id === action.item.id
+    )
+    const existingCartItem = state.items[existingCartItemIndex]
+    let items
+
+    if (existingCartItem) {
+      const updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount
+      }
+      items = [...state.items]
+      items[existingCartItemIndex] = updatedItem
+    } else {
+      items = state.items.concat(action.item)
+    }
 
     return { items, totalAmount }
   } else if (action === 'REMOVE') {
